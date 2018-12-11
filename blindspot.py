@@ -8,22 +8,33 @@ from astropy.time import Time
 from astropy import units as u
 
 
+# Plotting of each zenDist switch
 PLOT = 0
 
+
+
 zenDist = []
-maxAzVel = []
 maxAltVel = []
+maxAltAcc = []
+maxAzVel = []
 maxAzAcc = []
-max AzVel = []
 
 def main():
     
-    for i in np.linspace(-2,2,8):
-        zenDist.append(i)
-        print i
-        maxAz.append(maxSpeed(i))
-        print maxAz[-1]
+    for i in createZenDist:
         
+        zenDist.append(i)
+        
+        results = maxSpeed(i)
+        print (i, "of 10000") 
+        print results
+        print
+       
+        maxAltVel.append(results[0])
+        maxAltAcc.append(results[1])
+        maxAzVel.append(results[2])
+        maxAzAcc.append(results[3])
+ 
     plot()
        
 
@@ -37,6 +48,7 @@ def breaktoconsole():
 
 
 def maxSpeed (zenDist):
+    # Returns the maximum axis speeds and accelerations of Alt and Cass for a given zenDist
 
     # LT observing location 
     obsLoc = EarthLocation(lat='28.7624', lon='17.8792', height=2400*u.m)  
@@ -72,7 +84,7 @@ def maxSpeed (zenDist):
         timeAr.append(step)
         altAng.append(altAz.alt.deg)
         azAng.append(altAz.az.deg)
-        altVel.append(abs(altAz.alt.deg-altAng[-2]))
+        altVel.append(altAz.alt.deg-altAng[-2])
         
         if ((altAz.az.deg-azAng[-2]) > 180):
             azVel.append(abs(altAz.az.deg-azAng[-2]-360))
@@ -84,36 +96,89 @@ def maxSpeed (zenDist):
         
         
         
-    if PLOT:
-        fig, ax1 = plt.subplots()
-        ax1.plot(timeAr[3:], altAcc[3:], 'b-')
+    if PLOT > 0:
+        
+        fig, [[ax1,ax2],[ax3,ax4],[ax5,ax6]] = plt.subplots(nrows=3, ncols=2)
+        
+       
+         
+        ax1.plot(timeAr[3:], altAng[3:], 'r.')
         ax1.set_xlabel('time (s)')
-        ax1.set_ylabel('Angular Velocity [deg / s]', color='b')
-        ax1.set_ylim(bottom=0)
+        ax1.set_ylabel('Position [deg]', color='b')
         ax1.tick_params('y', colors='b')
 
-        ax2 = ax1.twinx()
-
-        ax2.plot(timeAr[3:], altAng[3:], 'r.')
-        ax2.set_ylabel('Angle', color='r')
-        ax2.tick_params('y', colors='r')
-
-        fig.tight_layout()
+        ax2.plot(timeAr[3:], azAng[3:], 'r.')
+        ax2.set_xlabel('time (s)')
+        ax2.set_ylabel('Position [deg]', color='b')
+        #ax2.set_ylim(bottom=-1)
+        ax2.tick_params('y', colors='b')
+      
+      
+        ax3.plot(timeAr[3:], altVel[3:], 'b.')
+        ax3.set_xlabel('time (s)')
+        ax3.set_ylabel('Angular Velocity [deg / s]', color='b')
+        ax3.tick_params('y', colors='b')
+      
+        ax4.plot(timeAr[3:], azVel[3:], 'b.')
+        ax4.set_xlabel('time (s)')
+        ax4.set_ylabel('Angular Velocity [deg / s]', color='b')
+        ax4.tick_params('y', colors='b')
+        
+        
+        ax5.plot(timeAr[3:], altAcc[3:], 'g.')
+        ax5.set_xlabel('time (s)')
+        ax5.set_ylabel('Angular Acceleration [deg / s^2]', color='b')
+        ax5.tick_params('y', colors='b')
+        
+        ax6.plot(timeAr[3:], azAcc[3:], 'g.')
+        ax6.set_xlabel('time (s)')
+        ax6.set_ylabel('Angular Acceleration [deg / s^2]', color='b')
+        ax6.tick_params('y', colors='b')
+        
+       
+        #fig.tight_layout()
         plt.show()
         
+        # PLOT+=-1
+        
 
-    return max(altAcc[3:])
+    return (max(altVel[3:]),max(altAcc[3:]),max(azVel[3:]),max(azAcc[3:]))
+
+def createZenDist:
+    # Creates a zenDist population
+    
+
 
 def plot():
 
-    fig, ax1 = plt.subplots()
-    ax1.plot(zenDist, maxAz, 'b-')
+    fig, [[ax1,ax2],[ax3,ax4]] = plt.subplots(nrows=2, ncols=2)
+    
+    
+    ax1.plot(zenDist, maxAltVel, 'b-')
     ax1.set_xlabel('Zenith Distance at transit')
     ax1.set_ylabel('Angular Velocity [deg / s]', color='b')
     ax1.tick_params('y', colors='b')
+    
+    
+    ax2.plot(zenDist, maxAzVel, 'r-')
+    ax2.set_xlabel('Zenith Distance at transit')
+    ax2.set_ylabel('Angular Velocity [deg / s]', color='b')
+    ax2.tick_params('y', colors='b')
+    
+    ax3.plot(zenDist, maxAltAcc, 'g-')
+    ax3.set_xlabel('Zenith Distance at transit')
+    ax3.set_ylabel('Max Angular Acceleration [deg / s^2]', color='b')
+    ax3.tick_params('y', colors='b')
+    
+    ax4.plot(zenDist, maxAzAcc, 'k-')
+    ax4.set_xlabel('Zenith Distance at transit')
+    ax4.set_ylabel('Max Angular Acceleration [deg / s^2]', color='b')
+    ax4.tick_params('y', colors='b')
 
     fig.tight_layout()
     plt.show()
+    
+    breaktoconsole()
 
 
 main()
