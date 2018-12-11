@@ -21,7 +21,7 @@ maxAzAcc = []
 
 def main():
     
-    for i in np.range(-2,2,20): # createZenDists(-2,2,10,10):
+    for i in createZenDist:
         
         zenDist.append(i)
         
@@ -72,8 +72,8 @@ def maxSpeed (zenDist):
     timeAr= [0]
 
 
-    for step in range(-10, 10):
-        obsTime += u.min
+    for step in range(-600, 600):
+        obsTime += u.second
         
         aa = AltAz(location=obsLoc, obstime=obsTime)
         altAz = coord.transform_to(aa)
@@ -144,15 +144,8 @@ def maxSpeed (zenDist):
 
     return (max(altVel[3:]),max(altAcc[3:]),max(azVel[3:]),max(azAcc[3:]))
 
-def createZenDists(start, stop, no, order):
-    # Creates a zenDist population of no points
-    zenDists=[start]
-    
-    for i in range (no):
-        
-        zenDists.append()
-    
-    return zenDists
+def createZenDist:
+    # Creates a zenDist population
     
 
 
