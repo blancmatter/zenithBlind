@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 import code
-import sys
-import numpy as np
+import cPickle as pickle
 import matplotlib.pyplot as plt
+import numpy as np
+import sys
 from astropy.coordinates import EarthLocation,SkyCoord, AltAz
 from astropy.time import Time
 from astropy import units as u
+
 
 
 # Plotting of each zenDist switch
@@ -159,7 +161,9 @@ def createZenDist():
     print zenDists
     return zenDists
     
-
+def pickle():
+    pickle.dump( maxAltVel, maxAzVel, maxAltAcc, maxAzacc, open( "plotdata.p", "wb" ) )
+    
 
 def plot():
 
