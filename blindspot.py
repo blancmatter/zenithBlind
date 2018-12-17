@@ -21,14 +21,13 @@ maxAzAcc = []
 
 def main():
     
-    for i in createZenDist:
+    #for i in np.linspace(-0.2,0.2,20):
+    for i in createZenDist():
         
         zenDist.append(i)
         
         results = maxSpeed(i)
-        print (i, "of 10000") 
-        print results
-        print
+       
        
         maxAltVel.append(results[0])
         maxAltAcc.append(results[1])
@@ -40,7 +39,7 @@ def main():
 
 
 
-
+# Making a comment for test of branching
 
 def breaktoconsole():
     code.interact(local=locals())
@@ -144,8 +143,22 @@ def maxSpeed (zenDist):
 
     return (max(altVel[3:]),max(altAcc[3:]),max(azVel[3:]),max(azAcc[3:]))
 
-def createZenDist:
+def createZenDist():
     # Creates a zenDist population
+    
+    zenDists=[]
+    
+    for i in range(1,15):
+        zenDists.append(2 / float(i**2))
+    
+    zenDists.append(0)
+    for i in range(len(zenDists)):
+        zenDists.append(-zenDists[i])
+    
+    
+    
+    print zenDists
+    return zenDists
     
 
 
@@ -154,23 +167,23 @@ def plot():
     fig, [[ax1,ax2],[ax3,ax4]] = plt.subplots(nrows=2, ncols=2)
     
     
-    ax1.plot(zenDist, maxAltVel, 'b-')
+    ax1.plot(zenDist, maxAltVel, 'b.')
     ax1.set_xlabel('Zenith Distance at transit')
     ax1.set_ylabel('Angular Velocity [deg / s]', color='b')
     ax1.tick_params('y', colors='b')
     
     
-    ax2.plot(zenDist, maxAzVel, 'r-')
+    ax2.plot(zenDist, maxAzVel, 'r.')
     ax2.set_xlabel('Zenith Distance at transit')
     ax2.set_ylabel('Angular Velocity [deg / s]', color='b')
     ax2.tick_params('y', colors='b')
     
-    ax3.plot(zenDist, maxAltAcc, 'g-')
+    ax3.plot(zenDist, maxAltAcc, 'g.')
     ax3.set_xlabel('Zenith Distance at transit')
     ax3.set_ylabel('Max Angular Acceleration [deg / s^2]', color='b')
     ax3.tick_params('y', colors='b')
     
-    ax4.plot(zenDist, maxAzAcc, 'k-')
+    ax4.plot(zenDist, maxAzAcc, 'k.')
     ax4.set_xlabel('Zenith Distance at transit')
     ax4.set_ylabel('Max Angular Acceleration [deg / s^2]', color='b')
     ax4.tick_params('y', colors='b')
@@ -178,7 +191,7 @@ def plot():
     fig.tight_layout()
     plt.show()
     
-    breaktoconsole()
+   
 
 
 main()
