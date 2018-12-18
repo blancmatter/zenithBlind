@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import code
-import cPickle as pickle
+import pickle as pkl
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
@@ -35,7 +35,8 @@ def main():
         maxAltAcc.append(results[1])
         maxAzVel.append(results[2])
         maxAzAcc.append(results[3])
- 
+    
+    pickle()
     plot()
        
 
@@ -97,11 +98,8 @@ def maxSpeed (zenDist):
         
         
     if PLOT > 0:
-        
         fig, [[ax1,ax2],[ax3,ax4],[ax5,ax6]] = plt.subplots(nrows=3, ncols=2)
         
-       
-         
         ax1.plot(timeAr[3:], altAng[3:], 'r.')
         ax1.set_xlabel('time (s)')
         ax1.set_ylabel('Position [deg]', color='b')
@@ -135,8 +133,6 @@ def maxSpeed (zenDist):
         ax6.set_ylabel('Angular Acceleration [deg / s^2]', color='b')
         ax6.tick_params('y', colors='b')
         
-       
-        #fig.tight_layout()
         plt.show()
         
         # PLOT+=-1
@@ -149,7 +145,7 @@ def createZenDist():
     
     zenDists=[]
     
-    for i in range(1,15):
+    for i in range(1,4):
         zenDists.append(2 / float(i**2))
     
     zenDists.append(0)
@@ -162,7 +158,7 @@ def createZenDist():
     return zenDists
     
 def pickle():
-    pickle.dump( maxAltVel, maxAzVel, maxAltAcc, maxAzacc, open( "plotdata.p", "wb" ) )
+    pkl.dump( [zenDist, maxAltVel, maxAzVel, maxAltAcc, maxAzAcc], open( "plotdata.pkl", "wb" ) )
     
 
 def plot():
