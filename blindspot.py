@@ -158,7 +158,7 @@ def createZenDist():
     return zenDists
     
 def pickle():
-    pkl.dump( [zenDist, maxAltVel, maxAzVel, maxAltAcc, maxAzAcc], open( "plotdata.pkl", "wb" ) )
+    pkl.dump( [zenDist, maxAltVel, maxAzVel, maxAltAcc, maxAzAcc], open(sys.argv[1], "wb" ) )
     
 
 def plot():

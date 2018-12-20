@@ -13,7 +13,8 @@ maxAzAcc = []
 
 def main():
     for i in range (1,len(sys.argv)):
-        print "here number", sys.argv[i]
+        upkl(sys.argv[i])
+        
     exit()
     plot()
     
